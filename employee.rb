@@ -29,12 +29,8 @@ class SalariedEmployee < Employee
 	end	
 
 	def calculate_salary
-		@yearly_salary
-    end
-
-    def calculate_weekly_salary
-    	@yearly_salary / 52
-    end	
+		@yearly_salary / 52
+    end    
 end	
 
 class MultiPaymentEmployee < Employee
@@ -47,12 +43,10 @@ class MultiPaymentEmployee < Employee
 	end	
 
 	def calculate_salary
-		@yearly_salary + (@hourly_rate * @hours_worked)
+		(@yearly_salary/52) + (@hourly_rate * @hours_worked)
+
     end
 
-    def calculate_weekly_salary
-    	(@yearly_salary/52) + (@hourly_rate * @hours_worked)
-    end	
 end	
 
 class Payroll
@@ -64,10 +58,14 @@ class Payroll
   	def pay_employees
   		total = 0
   		@employees.each do |employee|
-  			puts "Nombre: #{employee.name}, #{employee.calculate_weekly_salary}"
-  			total += employee.calculate_weekly_salary
-   		end   
-    	puts "Total amount spent this week: #{total}"
+  			puts "Nombre: #{employee.name} => #{employee.calculate_salary}"
+  			total += employee.calculate_salary
+   		end   		
+    	puts "Total amount spent this week: #{total*0.82}"
+  	end
+
+  	def notify_employee(employee)
+  		"You have been paid"          
   	end
 end
 
@@ -76,4 +74,9 @@ end
 josh = HourlyEmployee.new('Josh', 'nachoemail@example.com', 35, 50)
 nizar = SalariedEmployee.new('Nizar', 'starcraftrulez@gmail.com', 1000000)
 ted = MultiPaymentEmployee.new('Ted', 'fortranr0x@gmail.com', 60000, 275, 55)
-carlo =
+carlo = HourlyEmployee.new('Carlo', 'carlo@example.com', 15, 40)
+gonzalo = HourlyEmployee.new('Gonzalo', 'gonzalo@example.com', 15, 40)
+
+employees = [josh, nizar, ted, carlo, gonzalo]
+payroll = Payroll.new(employees)
+payroll.pay_employees
